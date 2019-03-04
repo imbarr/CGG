@@ -49,10 +49,18 @@ class App(Frame):
         to_screen_x = lambda x: shift_x + (x - a)/step
         to_screen_y = lambda y: height - (y - inf)/step - shift_y
         from_screen_x = lambda x: (x - shift_x)*step + a
+        from_screen_y = lambda y: (- y + height - shift_y)*step + inf
         screen_func = lambda x: to_screen_y(func(from_screen_x(x)))
 
-        self.canvas.create_line(0, to_screen_y(0), width, to_screen_y(0), fill='green')
-        self.canvas.create_line(to_screen_x(0), 0, to_screen_x(0), height, fill='green')
+        for x in range(math.ceil(from_screen_x(0)), math.floor(from_screen_x(width)) + 1):
+            self.canvas.create_line(to_screen_x(x), 0, to_screen_x(x), height, fill='gray69')
+
+        for y in range(math.floor(from_screen_y(height)), math.ceil(from_screen_y(0)) + 1):
+            self.canvas.create_line(0, to_screen_y(y), width, to_screen_y(y), fill='gray69')
+        print(from_screen_y(0))
+
+        self.canvas.create_line(0, to_screen_y(0), width, to_screen_y(0), fill='gray30')
+        self.canvas.create_line(to_screen_x(0), 0, to_screen_x(0), height, fill='gray30')
 
         for x in range(int(to_screen_x(a)), int(to_screen_x(b)) + 1):
-            self.canvas.create_line(x, screen_func(x), x + 1, screen_func(x + 1))
+            self.canvas.create_line(x, screen_func(x), x + 1, screen_func(x + 1), fill='black')
